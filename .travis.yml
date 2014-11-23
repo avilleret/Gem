@@ -1,0 +1,8 @@
+os:
+  - linux
+  - osx
+
+osx_image: xcode61
+
+script:
+  - ./Travis.sh
