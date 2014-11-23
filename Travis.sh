@@ -8,6 +8,7 @@ if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
   #  libdc1394-dev
 
   apt-get build-dep gem
+  apt-get install libglfw-dev libglfw3-dev libsdl2-devs
   apt-get install puredata-dev
 
   # wget http://msp.ucsd.edu/Software/pd-0.46-2.src.tar.gz
