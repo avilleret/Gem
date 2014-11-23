@@ -7,9 +7,9 @@ if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
   #  libftgl-dev libfreetype6-dev libgl1-mesa-dev libglu1-mesa-dev \
   #  libdc1394-dev
 
-  apt-get build-dep gem
-  apt-get install libglfw-dev libglfw3-dev libsdl2-devs
-  apt-get install puredata-dev
+  sudo apt-get build-dep gem
+  sudo apt-get install libglfw-dev libglfw3-dev libsdl2-devs
+  sudo apt-get install puredata-dev
 
   # wget http://msp.ucsd.edu/Software/pd-0.46-2.src.tar.gz
   # tar -xvf pd-0.46-2.src.tar.gz
