@@ -2,10 +2,12 @@
 # see https://travis-ci.org/avilleret/Gem
 
 if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
-  sudo apt-get install autopoint dh-autoreconf libdv4-dev libiec61883-dev \
-    libmagick++-dev libmagick++5 libmagickwand-dev libpopt-dev libquicktime-dev libquicktime2 libunicap2 libunicap2-dev \
-    libftgl-dev libfreetype6-dev libgl1-mesa-dev libglu1-mesa-dev \
-    libdc1394-dev
+  #sudo apt-get install autopoint dh-autoreconf libdv4-dev libiec61883-dev \
+  #  libmagick++-dev libmagick++5 libmagickwand-dev libpopt-dev libquicktime-dev libquicktime2 libunicap2 libunicap2-dev \
+  #  libftgl-dev libfreetype6-dev libgl1-mesa-dev libglu1-mesa-dev \
+  #  libdc1394-dev
+
+  apt-get build-dep gem
 
   wget http://msp.ucsd.edu/Software/pd-0.46-2.src.tar.gz
   tar -xvf pd-0.46-2.src.tar.gz
