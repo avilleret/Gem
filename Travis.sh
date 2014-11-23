@@ -14,7 +14,8 @@ if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
 
   ./autogen.sh && ./configure --without-ftgl --with-pd=$(pwd)/pd-0.46-2/src && make
 else
-	brew install pkg-config gettext
+  brew update
+  brew install pkg-config gettext
   brew link gettext --force
   brew install imagemagick ftgl
   brew install sdl homebrew/versions/glfw2 homebrew/versions/glfw3
