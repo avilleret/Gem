@@ -2,7 +2,7 @@
 # see https://travis-ci.org/avilleret/Gem
 
 if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
-  sudo apt-get install puredata-core
+  sudo apt-get install puredata-dev
   ./autogen.sh && ./configure && make
 else
 	brew install pkg-config gettext
