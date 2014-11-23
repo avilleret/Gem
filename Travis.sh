@@ -2,7 +2,8 @@
 # see https://travis-ci.org/avilleret/Gem
 
 if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
-  sudo apt-get install puredata-dev
+  sudo apt-get build-dep gem-dev
+  sudo apt-get install libftgl-dev
   ./autogen.sh && ./configure && make
 else
 	brew install pkg-config gettext
