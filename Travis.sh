@@ -8,9 +8,10 @@ if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
   #  libdc1394-dev
 
   apt-get build-dep gem
+  apt-get install puredata-dev
 
-  wget http://msp.ucsd.edu/Software/pd-0.46-2.src.tar.gz
-  tar -xvf pd-0.46-2.src.tar.gz
+  # wget http://msp.ucsd.edu/Software/pd-0.46-2.src.tar.gz
+  # tar -xvf pd-0.46-2.src.tar.gz
 
   ./autogen.sh && ./configure --without-ftgl --with-pd=$(pwd)/pd-0.46-2/src && make
 else
