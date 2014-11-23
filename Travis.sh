@@ -10,7 +10,7 @@ if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
   wget http://msp.ucsd.edu/Software/pd-0.46-2.src.tar.gz
   tar -xvf pd-0.46-2.src.tar.gz
 
-  ./autogen.sh && ./configure --with-pd=$(pwd)/pd-0.46-2/src && make
+  ./autogen.sh && ./configure --without-ftgl --with-pd=$(pwd)/pd-0.46-2/src && make
 else
 	brew install pkg-config gettext
   brew link gettext --force
@@ -21,5 +21,5 @@ else
   tar -xvf pd-0.46-2-64bit.mac.tar.gz
 
   ./autogen.sh
-  ./configure --with-pd=$(pwd)/Pd-0.46-2-64bit.app/Contents/Resources/ --without-QuickTime-framework --without-Carbon-framework && make
+  ./configure --with-pd=$(pwd)/Pd-0.46-2-64bit.app/Contents/Resources/  --without-ftgl --without-QuickTime-framework --without-Carbon-framework && make
 fi
