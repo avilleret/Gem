@@ -18,6 +18,7 @@ if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
 else
   brew update
   brew install pkg-config gettext
+  brew install fribidi --universal
   brew link gettext --force
   brew install imagemagick ftgl
   brew install sdl homebrew/versions/glfw2 homebrew/versions/glfw3
