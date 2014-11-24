@@ -4,3 +4,4 @@ os:
 
 script:
   - ./Travis.sh
+  - ./Travis.sh --build-32bit
