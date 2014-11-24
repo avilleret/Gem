@@ -23,8 +23,14 @@ else
   brew install sdl homebrew/versions/glfw2 homebrew/versions/glfw3
 
   wget http://msp.ucsd.edu/Software/pd-0.46-2-64bit.mac.tar.gz
-  tar -xvf pd-0.46-2-64bit.mac.tar.gz
+  tar -xf pd-0.46-2-64bit.mac.tar.gz
 
-  ./autogen.sh
-  ./configure --with-pd=$(pwd)/Pd-0.46-2-64bit.app/Contents/Resources/  --without-ftgl --without-QuickTime-framework --without-Carbon-framework && make
+  wget http://msp.ucsd.edu/Software/pd-0.46-2.mac.tar.gz
+  tar -xf pd-0.46-2.mac.tar.gz
+
+  # 64bit build
+  ./autogen.sh && ./configure --with-pd=$(pwd)/Pd-0.46-2-64bit.app/Contents/Resources/  --without-ftgl --without-QuickTime-framework --without-Carbon-framework && make
+
+  # 32bit build
+  ./autogen.sh && ./configure --with-pd=$(pwd)/Pd-0.46-2.app/Contents/Resources/  --enable-fat-binary=i386 --without-ftgl --without-QuickTime-framework --without-Carbon-framework && make
 fi
