@@ -25,6 +25,8 @@ do
   shift
 done
 
+GIT_GEM_VERSION=$(git describe --always)
+
 if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
 
   if [[ $BUILD32BIT ]]; then
@@ -41,7 +43,10 @@ if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
     # wget http://msp.ucsd.edu/Software/pd-0.46-2.src.tar.gz
     # tar -xvf pd-0.46-2.src.tar.gz
 
-    ./autogen.sh && ./configure --without-ftgl --with-pd=$(pwd)/pd-0.46-2/src && make
+    ./autogen.sh && ./configure --without-ftgl --with-pd=$(pwd)/pd-0.46-2/src && make install DESTDIR=/tmp/dist
+
+    tar -C /tmp/dist -cvf gem-git-$GIT_GEM_VERSION-ubuntu-12.10.tar
+    gzip -9 gem-git-$GIT_GEM_VERSION.tar
  fi
 else
   brew update
@@ -51,15 +56,23 @@ else
   brew install imagemagick ftgl
   brew install sdl homebrew/versions/glfw2 homebrew/versions/glfw3
 
+  # On OSXn the make install step uses a hack to make a binary tarball
   if [[ $BUILD32BIT ]]; then
+    GEM_TARBALL_NAME=gem-git-$GIT_GEM_VERSION-MacOS-32bit
     wget http://msp.ucsd.edu/Software/pd-0.46-2.mac.tar.gz
     tar -xf pd-0.46-2.mac.tar.gz
     # 32bit build
-    ./autogen.sh && ./configure --with-pd=$(pwd)/Pd-0.46-2.app/Contents/Resources/  --enable-fat-binary=i386 --without-ftgl --without-QuickTime-framework --without-Carbon-framework && make
+    ./autogen.sh && ./configure --with-pd=$(pwd)/Pd-0.46-2.app/Contents/Resources/  --enable-fat-binary=i386 --without-ftgl --without-QuickTime-framework --without-Carbon-framework && \
+    make install libdir=/tmp/$GEM_TARBALL_NAME && tar -C /tmp -cvf $GEM_TARBALL_NAME.tar $GEM_TARBALL_NAME && \
+    gzip -9 $GEM_TARBALL_NAME.tar
   else
+    GEM_TARBALL_NAME=gem-git-$GIT_GEM_VERSION-MacOS-64bit
     wget http://msp.ucsd.edu/Software/pd-0.46-2-64bit.mac.tar.gz
     tar -xf pd-0.46-2-64bit.mac.tar.gz
     # 64bit build
-    ./autogen.sh && ./configure --with-pd=$(pwd)/Pd-0.46-2-64bit.app/Contents/Resources/  --without-ftgl --without-QuickTime-framework --without-Carbon-framework && make
+    ./autogen.sh && ./configure --with-pd=$(pwd)/Pd-0.46-2-64bit.app/Contents/Resources/  --without-ftgl --without-QuickTime-framework --without-Carbon-framework && \
+    make install libdir=/tmp/$GEM_TARBALL_NAME && tar -C /tmp -cvf $GEM_TARBALL_NAME.tar $GEM_TARBALL_NAME && \
+    gzip -9 $GEM_TARBALL_NAME.tar
+
   fi
 fi
