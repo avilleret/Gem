@@ -40,6 +40,7 @@ if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
     sudo apt-get update -qq
     sudo apt-get build-dep gem -qq
     sudo apt-get install libglfw-dev libglfw3-dev libsdl2-devs -qq
+    sudo apt-get install sshpass -qq
 
     # wget http://msp.ucsd.edu/Software/pd-0.46-2.src.tar.gz
     # tar -xvf pd-0.46-2.src.tar.gz
@@ -57,6 +58,7 @@ else
   brew link gettext --force
   brew install imagemagick ftgl
   brew install sdl homebrew/versions/glfw2 homebrew/versions/glfw3
+  brew install sshpass
 
   # On OSXn the make install step uses a hack to make a binary tarball
   if [[ $BUILD32BIT ]]; then
