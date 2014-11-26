@@ -1,3 +1,6 @@
+env:
+  global:
+    secure: "BJUM4/HtpCQL9NR3z4Z6Ion3c5h5qnQ3G6ZTjZVkkL1Apj78wHRk8ieAYo0lzsvg3AFhpDQSaxSlHQYtAn7w74Brx+aeFRIn4ZcxzQxQsGb/cljcqmgtHrOBUjDGi8YE6eOdqVvi5ckpi2Couj05RpM4p4SV+0heGVXAAircm+8="
 os:
   - linux
   - osx
