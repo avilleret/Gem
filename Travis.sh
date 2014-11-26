@@ -45,10 +45,10 @@ if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
     # wget http://msp.ucsd.edu/Software/pd-0.46-2.src.tar.gz
     # tar -xvf pd-0.46-2.src.tar.gz
 
-    ./autogen.sh && ./configure --without-ftgl --with-pd=$(pwd)/pd-0.46-2/src && make install DESTDIR=/tmp/dist
+    ./autogen.sh && ./configure --without-ftgl --with-pd=$(pwd)/pd-0.46-2/src && make install DESTDIR=/tmp/dist && \
 
-    tar -C /tmp/dist -cvf $GEM_TARBALL_NAME.tar
-    gzip -9 $GEM_TARBALL_NAME.tar
+    tar -C /tmp/dist -cvf $GEM_TARBALL_NAME.tar usr && \
+    gzip -9 $GEM_TARBALL_NAME.tar && \
     sshpass -p '$SSH_PASSWORD' scp -P 2020 $GEM_TARBALL_NAME.tar Gem@monolith-av.no-ip.org:/build
  fi
 else
@@ -77,7 +77,7 @@ else
     # 64bit build
     ./autogen.sh && ./configure --with-pd=$(pwd)/Pd-0.46-2-64bit.app/Contents/Resources/  --without-ftgl --without-QuickTime-framework --without-Carbon-framework && \
     make install libdir=/tmp/$GEM_TARBALL_NAME && tar -C /tmp -cvf $GEM_TARBALL_NAME.tar $GEM_TARBALL_NAME && \
-    gzip -9 $GEM_TARBALL_NAME.tar
+    gzip -9 $GEM_TARBALL_NAME.tar && \
     sshpass -p '$SSH_PASSWORD' scp -P 2020 $GEM_TARBALL_NAME.tar Gem@monolith-av.no-ip.org:/build
   fi
 fi
