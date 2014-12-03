@@ -22,7 +22,7 @@ getbin() {
  done
 }
 
-READLINK=$(getbin readlink greadlink)
+READLINK=$(getbin greadlink readlink)
 
 SCRIPTDIR=${0%/*}
 
