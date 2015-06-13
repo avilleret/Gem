@@ -211,6 +211,8 @@ libPixes_la_SOURCES=  \
     pix_takealpha.h \
     pix_test.cpp \
     pix_test.h \
+    pix_texin.cpp \
+    pix_texin.h \
     pix_texture.cpp \
     pix_texture.h \
     pix_threshold_bernsen.cpp \

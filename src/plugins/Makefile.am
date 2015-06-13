@@ -31,6 +31,8 @@ libplugins_la_SOURCES= \
         modelloader.h \
         record.cpp \
         record.h \
+        texin.cpp \
+        texin.h \
         video.cpp \
         video.h
 
@@ -41,6 +43,8 @@ libplugins_la_SOURCES+= \
         filmBase.h \
         recordBase.cpp \
         recordBase.h \
+        texinBase.cpp \
+        texinBase.h \
         videoBase.cpp \
         videoBase.h
 
