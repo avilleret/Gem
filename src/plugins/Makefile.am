@@ -33,6 +33,8 @@ libplugins_la_SOURCES= \
         record.h \
         texin.cpp \
         texin.h \
+        texout.cpp \
+        texout.h \
         video.cpp \
         video.h
 
@@ -45,6 +47,8 @@ libplugins_la_SOURCES+= \
         recordBase.h \
         texinBase.cpp \
         texinBase.h \
+        texoutBase.cpp \
+        texoutBase.h \
         videoBase.cpp \
         videoBase.h
 
