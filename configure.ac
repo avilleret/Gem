@@ -430,6 +430,9 @@ GEM_CHECK_LIB([libvlc], [vlc],[vlc/vlc.h], [libvlc_video_set_callbacks],,,, [vid
 # VNC
 GEM_CHECK_LIB([libvncclient], [vncclient],[rfb/rfbclient.h], [rfbGetClient],,,, [video input])
 
+# BlackMagickDesign
+GEM_CHECK_LIB([DeckLinkAPI], [DeckLinkAPI],[DeckLinkAPI.h],,,,, [texture input])
+
 # assimp
 GEM_CHECK_LIB([assimp], [assimp],[assimp.h], [aiDetachAllLogStreams],,,, [3D model loading])
 ## check whether this is assimp2 or assimp3
