@@ -103,9 +103,9 @@ pix_texin :: ~pix_texin(){
 /////////////////////////////////////////////////////////
 void pix_texin :: render(GemState *state){
   if (m_texinHandle) {
-    pixBlock*frame=m_texinHandle->getFrame();
+    GLuint tex=m_texinHandle->getFrame();
     //post("got frame: %p", frame);
-    state->set(GemState::_PIX, frame);
+    // state->set(GemState::_PIX, frame);
   }
 }
 
@@ -118,7 +118,7 @@ void pix_texin :: startRendering(){
     m_running=STARTED;
 
   if(m_texinHandles.size()<1) {
-    error("do texin for this OS");
+    error("no texin for this OS");
     return;
   }
 

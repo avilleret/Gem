@@ -430,9 +430,10 @@ void texinBase :: usleep(unsigned long usec) {
   select(0,0,0,0,&sleep);
 }
 
-pixBlock* texinBase :: getFrame(void) {
-  pixBlock*pix=&m_image;
-  if(!(m_haveTexin && m_capturing))return NULL;
+GLuint texinBase :: getFrame(void) {
+  GLuint tex=m_textureObj;
+  if(!(m_haveTexin && m_capturing))return 0;
+  /*
   if(m_pimpl->threading) {
      // get from thread
     if(!m_pimpl->running){
@@ -445,13 +446,13 @@ pixBlock* texinBase :: getFrame(void) {
       pix=NULL;
     }
   }
+  */
   lock();
-  return pix;
+  return tex;
 }
 
 
 void texinBase :: releaseFrame(void) {
-  m_image.newimage=false;
   unlock();
   m_pimpl->thaw();
 }

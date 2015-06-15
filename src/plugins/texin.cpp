@@ -181,10 +181,10 @@ namespace gem { namespace plugins {
         return m_handle->start();
       return false;
     }
-    virtual pixBlock *getFrame(void) {
+    virtual GLuint getFrame(void) {
       // OK
       if(m_handle)return m_handle->getFrame();
-      return NULL;
+      return 0;
     }
     virtual void releaseFrame(void) {
       // OK
@@ -245,6 +245,7 @@ namespace gem { namespace plugins {
       return false;
     }
     */
+    /*
     virtual std::vector<std::string>dialogs(void) {
       // OK
       if(m_handle)
@@ -259,6 +260,7 @@ namespace gem { namespace plugins {
       }
       return result;
     }
+    */
     virtual bool isThreadable(void) {
       // OK
       // LATER properly set m_canThread in ctor

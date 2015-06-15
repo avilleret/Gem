@@ -15,6 +15,7 @@ WARRANTIES, see the file, "GEM.LICENSE.TERMS" in this distribution.
 #define _INCLUDE__GEM_PLUGINS_TEXIN_H_
 
 #include "Gem/Properties.h"
+#include "Gem/GemGL.h"
 #include <vector>
 #include <string>
 
@@ -86,7 +87,7 @@ namespace gem { namespace plugins {
        * if no new frame is available, this should set the "newimage" flag to false
        * \return the new frame or NULL on error
        */
-      virtual pixBlock *getFrame(void) = 0;
+      virtual GLuint    getFrame(void) = 0;
 
       /**
        * release a frame (after use)
@@ -145,27 +146,6 @@ namespace gem { namespace plugins {
        * if props holds properties that can not be read from the device, they are set to UNSET
        */
       virtual void getProperties(gem::Properties&props) = 0;
-
-
-      /**
-       * call a system-specific configuration dialog
-       * if your system provides a GUI for configuring the device, here is the time to open it
-       * of several dialogs are available (for different properties), the user can specify which one
-       * they want with the string list
-       * if the list is empty, provide sane defaults (e.g. ALL dialogs)
-       * if the system does not support dialogs, return FALSE
-       * if the system does support dialogs and the user has specified which one they want,
-       * return TRUE if at least one dialog could be handled
-       */
-//      virtual bool	    	dialog(std::vector<std::string>names=std::vector<std::string>()) = 0;
-      /**
-       * enumerate list of possible dialogs (if any)
-       */
-      virtual std::vector<std::string>dialogs(void) = 0;
-
-
-
-
 
       /**
        * returns TRUE if the object can be used in a thread or FALSE otherwise

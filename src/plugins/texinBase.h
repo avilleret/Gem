@@ -87,7 +87,7 @@ namespace gem { namespace plugins {
      * if no new frame is available, this should set the "newimage" flag to false
      * \return the new frame or NULL on error
      */
-    virtual pixBlock *getFrame(void);
+    virtual GLuint getFrame(void);
 
     /**
      * release a frame (after use)
@@ -225,13 +225,8 @@ namespace gem { namespace plugins {
      */
     void provide(const std::string);
 
-    //! grab a frame (work-horse)
-    /* this will be run in a separate thread (if threading is enabled)
-     * makes the data accessible in the "m_image" struct!
-     * access to m_image MUST be protected by lock() and unlock()
-     * this should not be used anymore!
-     */
-    virtual bool grabFrame(void){/* lock(); m_image.image.data=NULL; unlock(); */ return false; };
+    //! grab a texture (work-horse)
+    virtual bool grabFrame(void){ return false; };
 
     /***************
      ** THREADING
@@ -276,7 +271,7 @@ namespace gem { namespace plugins {
     //! indicates valid device (automatically set in open()/close())
     bool m_haveTexin;
     //! a place to store the image with grabFrame()
-    pixBlock m_image;
+    GLuint m_textureObj;
 
     unsigned int m_width;
     unsigned int m_height;
