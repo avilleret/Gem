@@ -60,4 +60,5 @@ libplugins_la_include_HEADERS = \
 	imageloader.h \
 	imagesaver.h \
 	record.h \
+        texin.h \
         video.h

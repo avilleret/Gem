@@ -191,12 +191,12 @@ namespace gem { namespace plugins {
 
 
 /**
- * \fn REGISTER_VIDEOFACTORY(const char *id, Class texinClass)
+ * \fn REGISTER_TEXINFACTORY(const char *id, Class texinClass)
  * registers a new class "texinClass" with the texin-factory
  *
  * \param id a symbolic (const char*) ID for the given class
  * \param texinClass a class derived from "texin"
  */
-#define REGISTER_VIDEOFACTORY(id, TYP) static gem::PluginFactoryRegistrar::registrar<TYP, gem::plugins::texin> fac_texin_ ## TYP (id)
+#define REGISTER_TEXINFACTORY(id, TYP) static gem::PluginFactoryRegistrar::registrar<TYP, gem::plugins::texin> fac_texin_ ## TYP (id)
 
 #endif	// for header file

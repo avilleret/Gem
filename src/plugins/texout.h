@@ -211,12 +211,12 @@ namespace gem { namespace plugins {
 
 
 /**
- * \fn REGISTER_VIDEOFACTORY(const char *id, Class texoutClass)
+ * \fn REGISTER_TEXOUTFACTORY(const char *id, Class texoutClass)
  * registers a new class "texoutClass" with the texout-factory
  *
  * \param id a symbolic (const char*) ID for the given class
  * \param texoutClass a class derived from "texout"
  */
-#define REGISTER_VIDEOFACTORY(id, TYP) static gem::PluginFactoryRegistrar::registrar<TYP, gem::plugins::texout> fac_texout_ ## TYP (id)
+#define REGISTER_TEXOUTFACTORY(id, TYP) static gem::PluginFactoryRegistrar::registrar<TYP, gem::plugins::texout> fac_texout_ ## TYP (id)
 
 #endif	// for header file

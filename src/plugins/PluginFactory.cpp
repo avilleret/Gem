@@ -145,6 +145,7 @@ void gem::BasePluginFactory::set(std::string id, void*ptr) {
 #include "modelloader.h"
 #include "record.h"
 #include "video.h"
+#include "texin.h"
 
 
 namespace {
@@ -173,6 +174,7 @@ void init(void) {
     PLUGIN_INIT(modelloader);
     PLUGIN_INIT(record);
     PLUGIN_INIT(video);
+    PLUGIN_INIT(texin);
 }
 }; };
 
