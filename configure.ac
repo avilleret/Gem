@@ -62,6 +62,8 @@ AC_CONFIG_FILES([plugins/videoVIDS/Makefile])
 AC_CONFIG_FILES([plugins/videoVLC/Makefile])
 AC_CONFIG_FILES([plugins/videoVNC/Makefile])
 
+AC_CONFIG_FILES([plugins/texinBlackMagicDesign/Makefile])
+
 ## extra holds additional objects/libraries
 # some of them have their own build system
 #AC_CONFIG_FILES([extra/Makefile])

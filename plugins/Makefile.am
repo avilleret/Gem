@@ -28,6 +28,9 @@ SUBDIRS += videoAVT videoHALCON videoPYLON
 ## asset loading plugins
 SUBDIRS += modelOBJ modelASSIMP2 modelASSIMP3
 
+## texture input plugin
+SUBDIRS += texinBlackMagicDesign
+
 
 ## filmTEST is not built by default, but we want to ship it
 DIST_SUBDIRS = $(SUBDIRS) filmTEST videoTEST
