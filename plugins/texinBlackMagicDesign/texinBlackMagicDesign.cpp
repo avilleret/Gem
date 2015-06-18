@@ -27,6 +27,13 @@ bool texinBlackMagicDesign::open(gem::Properties&props) {
   IDeckLink*          deckLink;
   HRESULT             err;
 
+  deckLinkIterator = CreateDeckLinkIteratorInstance();
+  if (deckLinkIterator == NULL)
+  {
+    fprintf(stderr, "A DeckLink iterator could not be created.  The DeckLink drivers may not be installed.");
+    return false;
+  }
+
   if(m_devname.empty()){
     int idx = m_devid;
 
