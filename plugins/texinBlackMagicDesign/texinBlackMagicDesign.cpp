@@ -159,8 +159,92 @@ bool texinBlackMagicDesign::provides(const std::string name) {
 std::vector<std::string>texinBlackMagicDesign::provides(void) {
   std::vector<std::string>result;
   result.push_back(m_name);
+
+  IDeckLinkIterator*  deckLinkIterator = NULL;
+  IDeckLink*          deckLink;
+  int                 numDevices = 0;
+  HRESULT             err;
+
+  deckLinkIterator = CreateDeckLinkIteratorInstance();
+  if (deckLinkIterator == NULL)
+  {
+    fprintf(stderr, "A DeckLink iterator could not be created.  The DeckLink drivers may not be installed.");
+    return result;
+  }
+
+  // Enumerate all cards in this system
+  while (deckLinkIterator->Next(&deckLink) == S_OK)
+  {
+    char *    deviceNameString = NULL;
+
+    // Increment the total number of DeckLink cards found
+    numDevices++;
+
+    IDeckLinkAttributes*    deckLinkAttributes = NULL;
+    int64_t           ports;
+    int             itemCount;
+
+    // Query the DeckLink for its configuration interface
+    err = deckLink->QueryInterface(IID_IDeckLinkAttributes, (void**)&deckLinkAttributes);
+    if (err != S_OK)
+    {
+      fprintf(stderr, "Could not obtain the IDeckLinkAttributes interface - result = %08x\n", result);
+      goto bail;
+    }
+
+    printf("Supported video input connections:\n  ");
+    itemCount = 0;
+    err = deckLinkAttributes->GetInt(BMDDeckLinkVideoInputConnections, &ports);
+    if (err == S_OK)
+    {
+      if (ports & bmdVideoConnectionSDI)
+      {
+        result.push_back("SDI");
+      }
+
+      if (ports & bmdVideoConnectionHDMI)
+      {
+        result.push_back("HDMI");
+      }
+
+      if (ports & bmdVideoConnectionOpticalSDI)
+      {
+        result.push_back("Optical SDI");
+      }
+
+      if (ports & bmdVideoConnectionComponent)
+      {
+        result.push_back("Component");
+      }
+
+      if (ports & bmdVideoConnectionComposite)
+      {
+        result.push_back("Composite");
+      }
+
+      if (ports & bmdVideoConnectionSVideo)
+      {
+        result.push_back("S-Video");
+      }
+    }
+    else
+    {
+      error("Could not obtain the list of input ports - error = %08x\n", err);
+      goto bail;
+    }
+
+  bail:
+    if (deckLinkAttributes != NULL)
+      deckLinkAttributes->Release();
+
+
+    // Release the IDeckLink instance when we've finished with it to prevent leaks
+    deckLink->Release();
+  }
+
   return result;
 }
+
 const std::string texinBlackMagicDesign::getName(void) {
   return m_name;
 }
