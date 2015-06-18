@@ -430,8 +430,20 @@ GEM_CHECK_LIB([libvlc], [vlc],[vlc/vlc.h], [libvlc_video_set_callbacks],,,, [vid
 # VNC
 GEM_CHECK_LIB([libvncclient], [vncclient],[rfb/rfbclient.h], [rfbGetClient],,,, [video input])
 
-# BlackMagickDesign
-GEM_CHECK_LIB([DeckLinkAPI], [DeckLinkAPI],[DeckLinkAPI.h],,,,, [texture input])
+# BlackMagicDesign DeckLinkAPI SDK
+AC_ARG_WITH([DeckLinkAPI],
+             AS_HELP_STRING([--with-DeckLinkAPI=<>],[specify path to DeckLinkAPI include]))
+
+DECKLINKAPI_INCLUDE_PATH=""
+if test "x$with_DeckLinkAPI" != "x"; then
+  dnl --with-DeckLinkAPI option have been passed
+  DECKLINKAPI_INCLUDE_PATH="$with_DeckLinkAPI"
+fi
+AC_SUBST(DECKLINKAPI_INCLUDE_PATH)
+# AC_LIB_APPENDTOVAR([CPPFLAGS],"-I${with_DeckLinkAPI}")
+# AC_CHECK_HEADERS([DeckLinkAPI.h])
+AM_CONDITIONAL(HAVE_DECKLINKAPI, [test "x$with_DeckLinkAPI" != "x"])
+
 
 # assimp
 GEM_CHECK_LIB([assimp], [assimp],[assimp.h], [aiDetachAllLogStreams],,,, [3D model loading])

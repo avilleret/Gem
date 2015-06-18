@@ -6,10 +6,10 @@ pkglib_LTLIBRARIES=
 gemhelpdir=$(pkglibdir)
 dist_gemhelp_DATA =
 
-# if HAVE_LIB_LIBBLACKMAGIC
+if HAVE_DECKLINKAPI
 pkglib_LTLIBRARIES+=gem_texinBlackMagicDesign.la
 dist_gemhelp_DATA +=BlackMagicDesign-texinplugin.pd
-# endif
+endif
 
 gem_texinBlackMagicDesign_la_CXXFLAGS =
 gem_texinBlackMagicDesign_la_LDFLAGS  = -module -avoid-version -shared
@@ -28,12 +28,13 @@ gem_texinBlackMagicDesign_la_LIBADD   += -L$(top_builddir) @GEM_EXTERNAL_LIBS@
 
 # Dependencies
 
-gem_texinBlackMagicDesign_la_CXXFLAGS += @GEM_LIB_DECKLINKAPI_CFLAGS@ @PKG_DECKLINKAPI_CFLAGS@
-gem_texinBlackMagicDesign_la_LIBADD   += @GEM_LIB_DECKLINKAPI_LIBS@
+gem_texinBlackMagicDesign_la_CXXFLAGS += -I@DECKLINKAPI_INCLUDE_PATH@
+#gem_texinBlackMagicDesign_la_CXXFLAGS += @GEM_LIB_DECKLINKAPI_CFLAGS@ -I@DECKLINKAPI_INCLUDE_PATH@
+#gem_texinBlackMagicDesign_la_LIBADD   += @GEM_LIB_DECKLINKAPI_LIBS@
 
 # convenience symlinks
 include $(srcdir)/../symlink_ltlib.mk
 
 
 ### SOURCES
-gem_texinBlackMagicDesign_la_SOURCES= texinBlackMagicDesign.cpp texinBlackMagicDesign.h
+gem_texinBlackMagicDesign_la_SOURCES= texinBlackMagicDesign.cpp texinBlackMagicDesign.h @DECKLINKAPI_INCLUDE_PATH@/DeckLinkAPIDispatch.cpp
