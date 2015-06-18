@@ -11,11 +11,14 @@ namespace gem { namespace plugins {
     class GEM_EXPORT texinBlackMagicDesign : public texin {
  private:
    std::string m_name; // 'BlackMagicDesign'
-   std::string m_devname;
+   std::string m_devname; // Card Name
+   int m_devid; // Card ID
 
    Properties m_props;
 
    GLuint m_textureObj;
+
+   IDeckLink*              m_deckLink;
 
  public:
    texinBlackMagicDesign(void);

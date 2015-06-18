@@ -21,35 +21,26 @@ void texinBlackMagicDesign::close(void) {
 }
 
 bool texinBlackMagicDesign::open(gem::Properties&props) {
-  /*
-  if(m_devname.empty())return false;
-  setProperties(props);
-  if(m_client)close();
-  m_client=rfbGetClient(8,3,4);
-  if(!m_client) {
-    return false;
-  }
+  post("texinBlackMagicDesign::open()");
 
-  m_client->GotFrameBufferUpdate = frameBufferCB;
-  m_client->GetPassword          = passwordCB;
-  rfbClientSetClientData(m_client, (void*)(rfb2gem), this);
+  IDeckLinkIterator*  deckLinkIterator = NULL;
+  IDeckLink*          deckLink;
+  HRESULT             err;
 
-  if(true) {
-    char*devname=strdup(m_devname.c_str());
-    char*argv[]={
-      "gem", // fake program name
-      devname // the connection string
-    };
-    int argc=sizeof(argv)/sizeof(*argv);
-    rfbBool res=rfbInitClient(m_client, &argc, argv);
-    free(devname);
-    if(!res) {
-      // rfbInitClient() will call rfbClientCleanup() on failure automatically!
-      m_client=0;
-      return false;
+  if(m_devname.empty()){
+    int idx = m_devid;
+
+    while ((err = deckLinkIterator->Next(&deckLink)) == S_OK)
+    {
+      if (idx == 0)
+        break;
+      --idx;
+
+      deckLink->Release();
     }
+  } else {
+
   }
-  */
   return true;
 }
 
@@ -97,19 +88,13 @@ std::vector<std::string>texinBlackMagicDesign::enumerate(void) {
 
 bool texinBlackMagicDesign::setDevice(int ID) {
   m_devname.clear();
+  m_devid=ID;
   return false;
 }
 bool texinBlackMagicDesign::setDevice(std::string device) {
   m_devname.clear();
-  // const std::string prefix="vnc://";
-  /*
-  if (!device.compare(0, prefix.size(), prefix)) {
-    m_devname=device.substr(prefix.size());
-    //post("VNC: device '%s'", m_devname.c_str());
-    return true;
-  }
-  */
-  return false;
+  m_devname=device;
+  return true;
 }
 bool texinBlackMagicDesign::enumProperties(gem::Properties&readable,
 			       gem::Properties&writeable) {
