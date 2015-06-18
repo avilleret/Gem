@@ -59,7 +59,39 @@ GLuint texinBlackMagicDesign::getFrame(void) {
 
 std::vector<std::string>texinBlackMagicDesign::enumerate(void) {
   std::vector<std::string>result;
-  // result.push_back("vnc");
+
+  IDeckLinkIterator*  deckLinkIterator = NULL;
+  IDeckLink*          deckLink;
+  int                 numDevices = 0;
+  HRESULT             err;
+
+  deckLinkIterator = CreateDeckLinkIteratorInstance();
+  if (deckLinkIterator == NULL)
+  {
+    fprintf(stderr, "A DeckLink iterator could not be created.  The DeckLink drivers may not be installed.");
+    return result;
+  }
+
+  // Enumerate all cards in this system
+  while (deckLinkIterator->Next(&deckLink) == S_OK)
+  {
+    char *    deviceNameString = NULL;
+
+    // Increment the total number of DeckLink cards found
+    numDevices++;
+
+    // *** Print the model name of the DeckLink card
+    err = deckLink->GetModelName((const char **) &deviceNameString);
+    if (err == S_OK)
+    {
+      result.push_back(deviceNameString);
+      // printf("=============== %s ===============\n\n", deviceNameString);
+      free(deviceNameString);
+    }
+    // Release the IDeckLink instance when we've finished with it to prevent leaks
+    deckLink->Release();
+  }
+
   return result;
 }
 
