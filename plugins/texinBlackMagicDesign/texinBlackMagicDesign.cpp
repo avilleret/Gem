@@ -206,7 +206,8 @@ std::vector<std::string>texinBlackMagicDesign::provides(void) {
 
     IDeckLinkAttributes*    deckLinkAttributes = NULL;
     int64_t           ports;
-    int             itemCount;
+    int               itemCount;
+    HRESULT           err;
 
     // Query the DeckLink for its configuration interface
     err = deckLink->QueryInterface(IID_IDeckLinkAttributes, (void**)&deckLinkAttributes);
