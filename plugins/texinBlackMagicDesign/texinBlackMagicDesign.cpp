@@ -212,7 +212,7 @@ std::vector<std::string>texinBlackMagicDesign::provides(void) {
     err = deckLink->QueryInterface(IID_IDeckLinkAttributes, (void**)&deckLinkAttributes);
     if (err != S_OK)
     {
-      fprintf(stderr, "Could not obtain the IDeckLinkAttributes interface - result = %08x\n", result);
+      fprintf(stderr, "Could not obtain the IDeckLinkAttributes interface - result = %08x\n", err);
       goto bail;
     }
 
