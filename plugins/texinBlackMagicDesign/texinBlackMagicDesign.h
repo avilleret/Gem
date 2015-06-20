@@ -4,8 +4,11 @@
 #include "plugins/texin.h"
 #include "Gem/Image.h"
 
+#include <map>
 
 #include <DeckLinkAPI.h>
+
+class PinnedMemoryAllocator;
 
 namespace gem { namespace plugins {
     class GEM_EXPORT texinBlackMagicDesign : public texin {
@@ -19,6 +22,7 @@ namespace gem { namespace plugins {
    GLuint m_textureObj;
 
    IDeckLink*              m_deckLink;
+   PinnedMemoryAllocator*  m_CaptureAllocator;
 
  public:
    texinBlackMagicDesign(void);
@@ -58,5 +62,38 @@ namespace gem { namespace plugins {
    virtual bool stop(void)  {return true;};
 };
 };}; // namespace
+
+
+////////////////////////////////////////////
+// PinnedMemoryAllocator
+////////////////////////////////////////////
+class PinnedMemoryAllocator : public IDeckLinkMemoryAllocator
+{
+public:
+   PinnedMemoryAllocator(/* QGLWidget* context, */ const char* name, unsigned cacheSize);
+   virtual ~PinnedMemoryAllocator();
+
+   GLuint bufferObjectForPinnedAddress(int bufferSize, const void* address);
+   void unPinAddress(const void* address);
+
+   // IUnknown methods
+   virtual HRESULT STDMETHODCALLTYPE   QueryInterface(REFIID iid, LPVOID *ppv);
+   virtual ULONG STDMETHODCALLTYPE     AddRef(void);
+   virtual ULONG STDMETHODCALLTYPE     Release(void);
+
+   // IDeckLinkMemoryAllocator methods
+   virtual HRESULT STDMETHODCALLTYPE   AllocateBuffer (uint32_t bufferSize, void* *allocatedBuffer);
+   virtual HRESULT STDMETHODCALLTYPE   ReleaseBuffer (void* buffer);
+   virtual HRESULT STDMETHODCALLTYPE   Commit ();
+   virtual HRESULT STDMETHODCALLTYPE   Decommit ();
+
+private:
+   // QGLWidget*                    mContext;
+   int                              mRefCount;
+   std::map<const void*, GLuint>    mBufferHandleForPinnedAddress;
+   std::vector<void*>               mFrameCache;
+   const char*                      mName;
+   unsigned                         mFrameCacheSize;
+};
 
 #endif	// for header file
