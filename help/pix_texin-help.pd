@@ -1,7 +1,11 @@
-#N canvas 1 112 450 300 10;
+#N canvas 544 226 450 300 10;
 #X obj 139 128 pix_texin;
 #X obj 139 94 gemhead;
-#X msg 278 124 create \, 1;
+#X msg 288 124 create \, 1;
 #X obj 278 160 gemwin;
+#X msg 278 96 destroy;
+#X msg 209 84 enumerate;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
+#X connect 4 0 3 0;
+#X connect 5 0 0 0;
