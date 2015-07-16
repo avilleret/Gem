@@ -1,4 +1,4 @@
-#include "texinBlackMagicDesign.h"
+#include "texinDECKLINK.h"
 #include "plugins/PluginFactory.h"
 
 #include <m_pd.h>

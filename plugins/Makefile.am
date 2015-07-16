@@ -29,7 +29,7 @@ SUBDIRS += videoAVT videoHALCON videoPYLON videoDECKLINK
 SUBDIRS += modelOBJ modelASSIMP2 modelASSIMP3
 
 ## texture input plugin
-SUBDIRS += texinBlackMagicDesign
+SUBDIRS += texinDECKLINK
 
 
 ## filmTEST is not built by default, but we want to ship it
