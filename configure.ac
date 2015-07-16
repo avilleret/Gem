@@ -62,8 +62,6 @@ AC_CONFIG_FILES([plugins/videoVIDS/Makefile])
 AC_CONFIG_FILES([plugins/videoVLC/Makefile])
 AC_CONFIG_FILES([plugins/videoVNC/Makefile])
 
-AC_CONFIG_FILES([plugins/texinBlackMagicDesign/Makefile])
-
 ## extra holds additional objects/libraries
 # some of them have their own build system
 #AC_CONFIG_FILES([extra/Makefile])
@@ -96,6 +94,9 @@ if test -d "$srcdir/plugins/videoPYLON"; then
 fi
 if test -d "$srcdir/plugins/videoDECKLINK"; then
   AC_CONFIG_SUBDIRS([plugins/videoDECKLINK])
+fi
+if test -d "$srcdir/plugins/texinDECKLINK"; then
+  AC_CONFIG_SUBDIRS([plugins/texinDECKLINK])
 fi
 
 
@@ -329,13 +330,13 @@ if test "x$with_MagickCore" = "x"; then
  with_MagickCore="$with_ImageMagick"
 fi
 
-GEM_CHECK_LIB([ImageMagick++], 
+GEM_CHECK_LIB([ImageMagick++],
               [Magick++],[Magick++.h],
               [main],
               AC_DEFINE([HAVE_LIBMAGICKPLUSPLUS], [1], [image loading/saving with ImageMagick++]),
               ,,[image loader])
 
-GEM_CHECK_LIB([MagickCore], 
+GEM_CHECK_LIB([MagickCore],
               [Magick],[magick/MagickCore.h],
               [IsMagickInstantiated],
               AC_DEFINE([HAVE_LIBMAGICK], [1], [image loading/saving with ImageMagick (Core)]),
@@ -432,21 +433,6 @@ GEM_CHECK_LIB([libvlc], [vlc],[vlc/vlc.h], [libvlc_video_set_callbacks],,,, [vid
 
 # VNC
 GEM_CHECK_LIB([libvncclient], [vncclient],[rfb/rfbclient.h], [rfbGetClient],,,, [video input])
-
-# BlackMagicDesign DeckLinkAPI SDK
-AC_ARG_WITH([DeckLinkAPI],
-             AS_HELP_STRING([--with-DeckLinkAPI=<>],[specify path to DeckLinkAPI include]))
-
-DECKLINKAPI_INCLUDE_PATH=""
-if test "x$with_DeckLinkAPI" != "x"; then
-  dnl --with-DeckLinkAPI option have been passed
-  DECKLINKAPI_INCLUDE_PATH="$with_DeckLinkAPI"
-fi
-AC_SUBST(DECKLINKAPI_INCLUDE_PATH)
-# AC_LIB_APPENDTOVAR([CPPFLAGS],"-I${with_DeckLinkAPI}")
-# AC_CHECK_HEADERS([DeckLinkAPI.h])
-AM_CONDITIONAL(HAVE_DECKLINKAPI, [test "x$with_DeckLinkAPI" != "x"])
-
 
 # assimp
 GEM_CHECK_LIB([assimp], [assimp],[assimp.h], [aiDetachAllLogStreams],,,, [3D model loading])
