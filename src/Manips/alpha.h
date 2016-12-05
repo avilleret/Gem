@@ -75,6 +75,7 @@ class GEM_EXTERN alpha : public GemBase
     GLenum              m_src_function;
     GLenum              m_src_fun_separate[4];
     GLenum              m_dst_fun_separate[4];
+	    bool 				m_separate;
 
     	void	    	funMess(int fun);
         GLenum          int2GLenum(int i);
@@ -91,6 +92,14 @@ class GEM_EXTERN alpha : public GemBase
      	//////////
     	// Disable Depthtest
     	void	    	depthtestMess(int i);
+
+    	/////////
+    	// Use separable blending function
+    	void 			separateMess(bool b);
+
+    	/////////
+    	// Set function to use on each channel
+    	void separateFuncMess(t_symbol *s, int argc, t_atom* argv);
 
     	t_inlet *m_inlet;
 

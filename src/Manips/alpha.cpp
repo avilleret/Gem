@@ -30,13 +30,14 @@ alpha :: alpha(t_floatarg fun)
        : m_alphaState(1),
 	 m_alphaTest(1),
 	 m_depthtest(1),
+	 m_separate(0),
    m_src_function(GL_SRC_ALPHA)
 {
   funMess(static_cast<int>(fun));
   m_inlet =  inlet_new(this->x_obj, &this->x_obj->ob_pd, &s_float, gensym("function"));
 
   glBlendFunciFn = (glBlendFunciProc)glXGetProcAddress((const GLubyte*)"glBlendFunci");
-  if (!glBlendFunci) {
+  if (!glBlendFunciFn) {
     ::error("You need at least OpenGL 4.0 to use separable blending function.");
   }
 
@@ -63,8 +64,13 @@ void alpha :: render(GemState *)
 {
   if (m_alphaState)    {
     glEnable(GL_BLEND);
-    glBlendFunc(m_src_function, m_function);
-    glBlendFunci(0, m_src_function, m_function);
+  	if(m_separate){
+  		for (int i = 0; i<4; i++){
+			glBlendFunciFn(i, m_src_fun_separate[i], m_dst_fun_separate[i]);
+  		}
+  	} else {
+  		glBlendFunc(m_src_function, m_function);
+  	}
     if (!m_depthtest)
       glDepthMask(GL_FALSE);  // turn off depth test for transparent objects
 
@@ -109,6 +115,26 @@ void alpha :: funMess(int fun)
 {
   m_function = int2GLenum(fun);
   setModified();
+}
+
+void alpha :: separateFuncMess(t_symbol *s, int argc, t_atom* argv){
+	int channel = 0;
+	if(s == gensym("red")     || s == gensym("R") ){
+		channel = 0;
+	} if(s == gensym("green") || s == gensym("G") ){
+		channel = 1;
+	} if(s == gensym("blue")  || s == gensym("B") ){
+		channel = 2;
+	} if(s == gensym("alpha") || s == gensym("A") ){
+		channel = 3;
+	}
+
+	if (argc > 1 && argv[0].a_type == A_FLOAT && argv[1].a_type == A_FLOAT){
+		m_src_fun_separate[channel] = int2GLenum(argv[0].a_w.w_float);
+		m_dst_fun_separate[channel] = int2GLenum(argv[1].a_w.w_float);
+	} else {
+		::error("separate blending function need 2 float args");
+	}
 }
 
 GLenum alpha :: int2GLenum(int i){
@@ -196,6 +222,19 @@ void alpha :: depthtestMess(int i)
 }
 
 /////////////////////////////////////////////////////////
+// depthtestMess
+//
+/////////////////////////////////////////////////////////
+void alpha :: separateMess(bool b)
+{
+    m_separate = b;
+    if (m_separate && !glBlendFunciFn) {
+   	 ::error("You need at least OpenGL 4.0 to use separable blending function.");
+   	 m_separate = false;
+   	}
+}
+
+/////////////////////////////////////////////////////////
 // static member function
 //
 /////////////////////////////////////////////////////////
@@ -205,4 +244,13 @@ void alpha :: obj_setupCallback(t_class *classPtr)
   CPPEXTERN_MSG1(classPtr, "test"    , testMess     , int);
   CPPEXTERN_MSG1(classPtr, "function", funMess      , int);
   CPPEXTERN_MSG1(classPtr, "auto"    , depthtestMess, int);
+  CPPEXTERN_MSG1(classPtr, "separate", separateMess,  int);
+  CPPEXTERN_MSG (classPtr, "red",  	   separateFuncMess);
+  CPPEXTERN_MSG (classPtr, "green",	   separateFuncMess);
+  CPPEXTERN_MSG (classPtr, "blue", 	   separateFuncMess);
+  CPPEXTERN_MSG (classPtr, "alpha",	   separateFuncMess);
+  CPPEXTERN_MSG (classPtr, "R",    	   separateFuncMess);
+  CPPEXTERN_MSG (classPtr, "G",    	   separateFuncMess);
+  CPPEXTERN_MSG (classPtr, "B",    	   separateFuncMess);
+  CPPEXTERN_MSG (classPtr, "A",    	   separateFuncMess);
 }
