@@ -29,6 +29,10 @@ DESCRIPTION
     "alphastate" - whether to use alpha blending
 
 -----------------------------------------------------------------*/
+
+// need to get some function pointer at runtime
+typedef void(*glBlendFunciProc)(GLuint buf, GLenum sfactor, GLenum dfactor);
+
 class GEM_EXTERN alpha : public GemBase
 {
     CPPEXTERN_HEADER(alpha, GemBase);
@@ -68,7 +72,12 @@ class GEM_EXTERN alpha : public GemBase
 	//////////
 	// the blending function
 	GLenum              m_function;
+    GLenum              m_src_function;
+    GLenum              m_src_fun_separate[4];
+    GLenum              m_dst_fun_separate[4];
+
     	void	    	funMess(int fun);
+        GLenum          int2GLenum(int i);
 
 
     	//////////
@@ -84,6 +93,8 @@ class GEM_EXTERN alpha : public GemBase
     	void	    	depthtestMess(int i);
 
     	t_inlet *m_inlet;
+
+        glBlendFunciProc glBlendFunciFn;
 };
 
 #endif	// for header file

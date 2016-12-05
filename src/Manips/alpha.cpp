@@ -29,10 +29,21 @@ CPPEXTERN_NEW_WITH_ONE_ARG(alpha, t_floatarg, A_DEFFLOAT);
 alpha :: alpha(t_floatarg fun)
        : m_alphaState(1),
 	 m_alphaTest(1),
-	 m_depthtest(1)
+	 m_depthtest(1),
+   m_src_function(GL_SRC_ALPHA)
 {
   funMess(static_cast<int>(fun));
   m_inlet =  inlet_new(this->x_obj, &this->x_obj->ob_pd, &s_float, gensym("function"));
+
+  glBlendFunciFn = (glBlendFunciProc)glXGetProcAddress((const GLubyte*)"glBlendFunci");
+  if (!glBlendFunci) {
+    ::error("You need at least OpenGL 4.0 to use separable blending function.");
+  }
+
+  for (int i = 0; i<4; i++){
+    m_src_fun_separate[i] = GL_SRC_ALPHA;
+    m_dst_fun_separate[i] = GL_ONE_MINUS_SRC_ALPHA;
+  }
 }
 
 /////////////////////////////////////////////////////////
@@ -52,7 +63,8 @@ void alpha :: render(GemState *)
 {
   if (m_alphaState)    {
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, m_function);
+    glBlendFunc(m_src_function, m_function);
+    glBlendFunci(0, m_src_function, m_function);
     if (!m_depthtest)
       glDepthMask(GL_FALSE);  // turn off depth test for transparent objects
 
@@ -95,68 +107,74 @@ void alpha :: alphaMess(int alphaState)
 /////////////////////////////////////////////////////////
 void alpha :: funMess(int fun)
 {
-  switch(fun){
+  m_function = int2GLenum(fun);
+  setModified();
+}
+
+GLenum alpha :: int2GLenum(int i){
+  GLenum function;
+  switch(i){
   case 1:
-    m_function=GL_ONE;
+    function=GL_ONE;
     break;
   case 2:
-    m_function=GL_ZERO;
+    function=GL_ZERO;
     break;
   case 3:
-    m_function=GL_SRC_COLOR;
+    function=GL_SRC_COLOR;
     break;
   case 4:
-    m_function=GL_ONE_MINUS_SRC_COLOR;
+    function=GL_ONE_MINUS_SRC_COLOR;
     break;
   case 5:
-    m_function=GL_DST_COLOR;
+    function=GL_DST_COLOR;
     break;
   case 6:
-    m_function=GL_ONE_MINUS_DST_COLOR;
+    function=GL_ONE_MINUS_DST_COLOR;
     break;
   case 7:
-    m_function=GL_SRC_ALPHA;
+    function=GL_SRC_ALPHA;
     break;
   case 8:
-    m_function=GL_ONE_MINUS_SRC_ALPHA;
+    function=GL_ONE_MINUS_SRC_ALPHA;
     break;
   case 9:
-    m_function=GL_DST_ALPHA;
+    function=GL_DST_ALPHA;
     break;
   case 10:
-    m_function=GL_ONE_MINUS_DST_ALPHA;
+    function=GL_ONE_MINUS_DST_ALPHA;
     break;
   case 11:
-    m_function=GL_CONSTANT_COLOR;
+    function=GL_CONSTANT_COLOR;
     break;
   case 12:
-    m_function=GL_ONE_MINUS_CONSTANT_COLOR;
+    function=GL_ONE_MINUS_CONSTANT_COLOR;
     break;
   case 13:
-    m_function=GL_CONSTANT_ALPHA;
+    function=GL_CONSTANT_ALPHA;
     break;
   case 14:
-    m_function=GL_ONE_MINUS_CONSTANT_ALPHA;
+    function=GL_ONE_MINUS_CONSTANT_ALPHA;
     break;
   case 15:
-    m_function=GL_SRC_ALPHA_SATURATE;
+    function=GL_SRC_ALPHA_SATURATE;
     break;
   case 16:
-    m_function=GL_SRC1_COLOR;
+    function=GL_SRC1_COLOR;
     break;
   case 17:
-    m_function=GL_ONE_MINUS_SRC1_COLOR;
+    function=GL_ONE_MINUS_SRC1_COLOR;
     break;
   case 18:
-    m_function=GL_SRC1_ALPHA;
+    function=GL_SRC1_ALPHA;
     break;
   case 19:
-    m_function=GL_ONE_MINUS_SRC1_ALPHA;
+    function=GL_ONE_MINUS_SRC1_ALPHA;
     break;
    default:
-     m_function=GL_ONE_MINUS_SRC_ALPHA;
+     function=GL_ONE_MINUS_SRC_ALPHA;
   }
-  setModified();
+  return function;
 }
 /////////////////////////////////////////////////////////
 // testMess
